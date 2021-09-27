@@ -11,6 +11,7 @@ import urllib.request
 from pathlib import Path
 from zipfile import ZipFile
 from collections import defaultdict
+import pdb
 
 logger = logging.getLogger(__name__)
 
@@ -160,7 +161,6 @@ class UMLS:
         terminologies = {}
 
         for sab, data in self._load_terminologies(filter_sabs, type_mapping):
-
             # TODO enforce min constraint here or at SAB level
             #if len(data) < min_dict_size:
             #    continue
@@ -334,9 +334,11 @@ class UMLS:
         Initialize UMLS from Rich Release Format (RRF) files
         see https://www.ncbi.nlm.nih.gov/books/NBK9685/
 
-        :param indir:
-        :param outdir:
+        :param indir: directory containing RRF files
+        :param outdir: target directory
         :return:
+
+        What are th RRF files?
         """
         outdir = UMLS.get_full_cache_path(outdir)
         backend = backend if backend else UMLS.backend
@@ -362,7 +364,6 @@ class UMLS:
                 if rsab in sabs:
                     continue
                 sabs[rsab] = (rsab, lat, ssn)
-
         with open(f'{outdir}/sabs.bin', 'wb') as fp:
             fp.write(msgpack.dumps(sabs))
 
@@ -375,7 +376,6 @@ class UMLS:
                 cui, tui, sty = row[0], row[1], row[3]
                 cui_to_tui[cui].add(tui)
                 tui_to_sty[tui] = sty
-
         with open(f'{outdir}/tui_to_sty.bin', 'wb') as fp:
             fp.write(msgpack.dumps(tui_to_sty))
 
@@ -390,7 +390,6 @@ class UMLS:
                     continue
                 for tui in cui_to_tui[cui]:
                     op.write(f'{sab}\t{tui}\t{cui}\t{term}\n')
-
         df = pd.read_csv(
             f'{outdir}/concepts.tsv',
             sep='\t',
@@ -411,6 +410,7 @@ class UMLS:
             df.to_parquet(f'{outdir}/concepts', partition_cols=['SAB'])
         elif backend == 'sqlite':
             UMLS.init_sqlite_tables(f'{outdir}/umls.db', df)
+
         # cleanup temp files
         os.remove(f'{outdir}/concepts.tsv')
 

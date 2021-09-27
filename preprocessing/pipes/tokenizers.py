@@ -16,7 +16,7 @@ import logging
 from functools import partial
 from collections import defaultdict
 from spacy.tokenizer import Tokenizer
-from spacy.pipeline import SentenceSegmenter
+from spacy.pipeline import Sentencizer
 from spacy.symbols import ORTH, LEMMA, POS, TAG
 from typing import List, Set, Dict, Tuple, Optional, Union, Callable, Generator
 

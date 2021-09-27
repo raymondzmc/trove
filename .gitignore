@@ -9,6 +9,7 @@ Thumbs.d
 
 # Trove specific cache
 .trove/
+.cache/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

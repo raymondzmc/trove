@@ -176,7 +176,9 @@ def grid_search(model_class,
     idx2tag = {0:'O', 1:'I-X', 2:'B-X'}
 
     L_train, Y_train, X_train_lens = train
-    L_dev, Y_dev, X_dev_lens = dev
+
+    if dev != None:
+        L_dev, Y_dev, X_dev_lens = dev
 
     # sample configs
     params = sample_param_grid(param_grid, seed)[:n_model_search]
@@ -213,14 +215,14 @@ def grid_search(model_class,
             continue
 
         # score on dev set (token or sequence-level)
-        if seq_eval:
-            metrics = score_sequences(*tokens_to_sequences(y_gold, y_pred, X_dev_lens, idx2tag=idx2tag))
-        else:
-            # use internal label model scorer
-            metrics = model.score(L=L_dev,
-                                  Y=y_gold,
-                                  metrics=['accuracy', 'precision', 'recall', 'f1'],
-                                  tie_break_policy=0)
+        # if seq_eval:
+        #     metrics = score_sequences(*tokens_to_sequences(y_gold, y_pred, X_dev_lens, idx2tag=idx2tag))
+        # else:
+        #     # use internal label model scorer
+        #     metrics = model.score(L=L_dev,
+        #                           Y=y_gold,
+        #                           metrics=['accuracy', 'precision', 'recall', 'f1'],
+        #                           tie_break_policy=0)
 
         # compare learned model against MV on same labeled dev set
         # skip if LM less than MV
