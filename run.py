@@ -11,6 +11,7 @@ from tqdm import tqdm
 from scipy.sparse import dok_matrix, vstack, csr_matrix
 from snorkel.labeling.model.label_model import LabelModel
 
+import torch
 import scispacy
 import spacy
 import pandas as pd
@@ -26,6 +27,7 @@ from trove.labelers.abbreviations import SchwartzHearstLabelingFunction
 from trove.labelers.core import SequenceLabelingServer
 from trove.metrics.analysis import lf_summary
 from trove.models.model_search import grid_search
+from trove.utils import score_umls_ontologies, combine_ontologies
 
 
 ROOT_DIR = os.getcwd()
@@ -128,7 +130,8 @@ def preprocess_msgs_kb_responses(args):
 
 def map_entity_classes(dictionary, class_map):
     """
-    Given a dictionary, create the term entity class probabilities
+    Given a dictionary, create the term entity class probabilities.
+    The probability of a term is determined by the labels of all its semantic types (include or not)
     """
     k = len([y for y in set(class_map.values()) if y != -1])
     ontology = {}
@@ -144,23 +147,8 @@ def map_entity_classes(dictionary, class_map):
             ontology[term] = proba / np.sum(proba)
     return ontology
 
-def map_entity_classes(dictionary, class_map):
-    """
-    Given a dictionary, create the term entity class probabilities
-    """
-    k = len([y for y in set(class_map.values()) if y != -1])
-    ontology = {}
-    for term in dictionary:
-        proba = np.zeros(shape=k).astype(np.float32)
-        for cls in dictionary[term]:
-            # ignore abstains
-            idx = class_map[cls] if cls in class_map else -1
-            if idx != -1:
-                proba[idx - 1] += 1
-        # don't include terms that don't map to any classes
-        if np.sum(proba) > 0:
-            ontology[term] = proba / np.sum(proba)
-    return ontology
+
+
 
 def create_lfs(args):
     stopwords = set(open('data/stopwords.txt','r').read().splitlines())
@@ -191,22 +179,53 @@ def create_lfs(args):
         print("Initializing the UMLS from zip file...")
         UMLS.init_from_nlm_zip(args.zipfile_path)
 
-    sty_df = pd.read_csv(pjoin(cache_root, 'SemGroups.txt'), sep="|", names=['GRP', 'GRP_STR', 'TUI', 'STR'])
+    # sty_df = pd.read_csv(pjoin(cache_root, 'SemGroups.txt'), sep="|", names=['GRP', 'GRP_STR', 'TUI', 'STR'])
+    sty_df = pd.read_csv(pjoin('data', 'Trove Semantic Types - Sheet1.csv'))
     class_map = {}
     for row in sty_df.itertuples():
-        label = 1 if row.GRP_STR == 'Disorders' else 0
-        class_map[row.TUI] = label
+        semantic_type = row[1]
+        tui = semantic_type.split('|')[2]
+        label = int(row[-1]) if (not np.isnan(row[-1])) else 0
+        class_map[tui] = label
         # class_map[row.TUI] = 1
 
 
     umls = UMLS(**config)
-    terminologies = ['CHV', 'SNOMEDCT_US', 'RXNORM']
+
+    use_top_s = False
+    s = 4 # This hyperparameter will need to be fine-tuned on a dev/val set
+
+    if use_top_s:
+
+        ontology_scores_file = pjoin(cache_root, 'data_sources.npy')
+        if not os.path.isfile(ontology_scores_file):
+            all_sources = list(umls.terminologies.keys())
+            tokenizer = transformers.BertTokenizer.from_pretrained('bert-base-cased', do_lower_case=False)
+            dataset = load_json_dataset(pjoin(ROOT_DIR, 'data', 'kb_responses.json'), tokenizer)
+            sentences = dataset.sentences
+            scores = score_umls_ontologies(sentences, umls.terminologies)
+            sorted_scores = sorted(scores.items(), key=lambda item: item[1], reverse=True)
+            np.save(ontology_scores_file, sorted_scores)
+        else:
+            sorted_scores = np.load(ontology_scores_file)
+
+        to_keep = [x[0] for x in sorted_scores[:s]]
+        to_combine = [x[0] for x in sorted_scores[s:]]
+
+
+        # Move the rest of data sources into a single ontology
+        umls.terminologies['others'] = combine_ontologies(umls.terminologies, to_combine)
+        terminologies = to_keep + ['others']
+
+    else:
+        terminologies = ['CHV', 'SNOMEDCT_US', 'RXNORM']
 
     ontologies = {
         sab : map_entity_classes(umls.terminologies[sab], class_map)
         for sab in terminologies
     }
-    # pdb.set_trace()
+
+    
     # create dictionaries for our Schwartz-Hearst abbreviation detection labelers
     positive, negative = set(), set()
 
@@ -319,6 +338,8 @@ def construct_label_matrix(args, lfs):
     X_sents= X_sents[0]
     words = []
     prev_end_index = 0
+
+    mv_extracted = 0
     for i, sent in enumerate(X_sents):
         y_pred_ = y_pred[prev_end_index: prev_end_index + len(sent.words)]
         L_train_ = L_train[prev_end_index: prev_end_index + len(sent.words)]
@@ -334,16 +355,20 @@ def construct_label_matrix(args, lfs):
                 mv = values[count.argmax()]
             y_pred_mv[i] = mv
 
+        mv_extracted += len(y_pred_mv[y_pred_mv == 1])
+
         extracted_words_lfs = np.array(sent.words)[y_pred_ == 1]
         extracted_words_mv = np.array(sent.words)[y_pred_mv == 1]
         prev_end_index += len(sent.words)
         words.append([sent.words, extracted_words_lfs, extracted_words_mv]) 
 
-    pdb.set_trace()
+    print(f"MV coverage: {mv_extracted / len(y_pred)}")
+    print(f"LM coverage: {len(y_pred[y_pred == 1]) / len(y_pred)}")
     df = pd.DataFrame(words)
     df[0] = df[0].map(lambda x: ' '.join(x))
-    df.to_csv('data/kb_responses_snorkle_results.csv')
+    # df.to_csv('data/kb_responses_snorkle_results_v4.csv')
     
+
     # label_model, best_config = grid_search(LabelModel, 
     #                                        model_class_init, 
     #                                        param_grid,
