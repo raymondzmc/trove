@@ -1,0 +1,128 @@
+Semantic Type,"Label v1 (-1, 0, 1)",Label v2
+ACTI|Activities & Behaviors|T052|Activity,0,1
+ACTI|Activities & Behaviors|T053|Behavior,0,1
+ACTI|Activities & Behaviors|T056|Daily or Recreational Activity,0,1
+ACTI|Activities & Behaviors|T051|Event,0,1
+ACTI|Activities & Behaviors|T064|Governmental or Regulatory Activity,0,1
+ACTI|Activities & Behaviors|T055|Individual Behavior,0,1
+ACTI|Activities & Behaviors|T066|Machine Activity,0,1
+ACTI|Activities & Behaviors|T057|Occupational Activity,0,1
+ACTI|Activities & Behaviors|T054|Social Behavior,0,1
+ANAT|Anatomy|T017|Anatomical Structure,0,1
+ANAT|Anatomy|T029|Body Location or Region,0,1
+"ANAT|Anatomy|T023|Body Part, Organ, or Organ Component",0,1
+ANAT|Anatomy|T030|Body Space or Junction,0,1
+ANAT|Anatomy|T031|Body Substance,0,1
+ANAT|Anatomy|T022|Body System,0,1
+ANAT|Anatomy|T025|Cell,0,
+ANAT|Anatomy|T026|Cell Component,0,
+ANAT|Anatomy|T018|Embryonic Structure,0,
+ANAT|Anatomy|T021|Fully Formed Anatomical Structure,0,
+ANAT|Anatomy|T024|Tissue,0,
+"CHEM|Chemicals & Drugs|T116|Amino Acid, Peptide, or Protein",0,
+CHEM|Chemicals & Drugs|T195|Antibiotic,0,1
+CHEM|Chemicals & Drugs|T123|Biologically Active Substance,0,
+CHEM|Chemicals & Drugs|T122|Biomedical or Dental Material,0,
+CHEM|Chemicals & Drugs|T103|Chemical,0,
+CHEM|Chemicals & Drugs|T120|Chemical Viewed Functionally,0,
+CHEM|Chemicals & Drugs|T104|Chemical Viewed Structurally,0,
+CHEM|Chemicals & Drugs|T200|Clinical Drug,0,
+"CHEM|Chemicals & Drugs|T196|Element, Ion, or Isotope",0,
+CHEM|Chemicals & Drugs|T126|Enzyme,0,
+CHEM|Chemicals & Drugs|T131|Hazardous or Poisonous Substance,0,1
+CHEM|Chemicals & Drugs|T125|Hormone,0,
+CHEM|Chemicals & Drugs|T129|Immunologic Factor,0,
+"CHEM|Chemicals & Drugs|T130|Indicator, Reagent, or Diagnostic Aid",0,
+CHEM|Chemicals & Drugs|T197|Inorganic Chemical,0,
+"CHEM|Chemicals & Drugs|T114|Nucleic Acid, Nucleoside, or Nucleotide",0,
+CHEM|Chemicals & Drugs|T109|Organic Chemical,0,
+CHEM|Chemicals & Drugs|T121|Pharmacologic Substance,0,1
+CHEM|Chemicals & Drugs|T192|Receptor,0,
+CHEM|Chemicals & Drugs|T127|Vitamin,0,1
+CONC|Concepts & Ideas|T185|Classification,0,
+CONC|Concepts & Ideas|T077|Conceptual Entity,0,
+CONC|Concepts & Ideas|T169|Functional Concept,0,
+CONC|Concepts & Ideas|T102|Group Attribute,0,
+CONC|Concepts & Ideas|T078|Idea or Concept,0,
+CONC|Concepts & Ideas|T170|Intellectual Product,0,
+CONC|Concepts & Ideas|T171|Language,0,
+CONC|Concepts & Ideas|T080|Qualitative Concept,0,
+CONC|Concepts & Ideas|T081|Quantitative Concept,0,
+CONC|Concepts & Ideas|T089|Regulation or Law,0,
+CONC|Concepts & Ideas|T082|Spatial Concept,0,1
+CONC|Concepts & Ideas|T079|Temporal Concept,0,1
+DEVI|Devices|T203|Drug Delivery Device,0,
+DEVI|Devices|T074|Medical Device,0,
+DEVI|Devices|T075|Research Device,0,
+DISO|Disorders|T020|Acquired Abnormality,1,
+DISO|Disorders|T190|Anatomical Abnormality,1,
+DISO|Disorders|T049|Cell or Molecular Dysfunction,1,
+DISO|Disorders|T019|Congenital Abnormality,1,
+DISO|Disorders|T047|Disease or Syndrome,1,
+DISO|Disorders|T050|Experimental Model of Disease,1,
+DISO|Disorders|T033|Finding,1,
+DISO|Disorders|T037|Injury or Poisoning,1,
+DISO|Disorders|T048|Mental or Behavioral Dysfunction,1,
+DISO|Disorders|T191|Neoplastic Process,1,
+DISO|Disorders|T046|Pathologic Function,1,
+DISO|Disorders|T184|Sign or Symptom,1,
+GENE|Genes & Molecular Sequences|T087|Amino Acid Sequence,0,
+GENE|Genes & Molecular Sequences|T088|Carbohydrate Sequence,0,
+GENE|Genes & Molecular Sequences|T028|Gene or Genome,0,
+GENE|Genes & Molecular Sequences|T085|Molecular Sequence,0,
+GENE|Genes & Molecular Sequences|T086|Nucleotide Sequence,0,
+GEOG|Geographic Areas|T083|Geographic Area,0,1
+LIVB|Living Beings|T100|Age Group,0,
+LIVB|Living Beings|T011|Amphibian,0,
+LIVB|Living Beings|T008|Animal,0,
+LIVB|Living Beings|T194|Archaeon,0,
+LIVB|Living Beings|T007|Bacterium,0,
+LIVB|Living Beings|T012|Bird,0,
+LIVB|Living Beings|T204|Eukaryote,0,
+LIVB|Living Beings|T099|Family Group,0,
+LIVB|Living Beings|T013|Fish,0,
+LIVB|Living Beings|T004|Fungus,0,
+LIVB|Living Beings|T096|Group,0,
+LIVB|Living Beings|T016|Human,0,
+LIVB|Living Beings|T015|Mammal,0,
+LIVB|Living Beings|T001|Organism,0,
+LIVB|Living Beings|T101|Patient or Disabled Group,0,
+LIVB|Living Beings|T002|Plant,0,
+LIVB|Living Beings|T098|Population Group,0,1
+LIVB|Living Beings|T097|Professional or Occupational Group,1,
+LIVB|Living Beings|T014|Reptile,0,
+LIVB|Living Beings|T010|Vertebrate,0,
+LIVB|Living Beings|T005|Virus,0,
+OBJC|Objects|T071|Entity,0,
+OBJC|Objects|T168|Food,0,
+OBJC|Objects|T073|Manufactured Object,0,1
+OBJC|Objects|T072|Physical Object,0,
+OBJC|Objects|T167|Substance,0,1
+OCCU|Occupations|T091|Biomedical Occupation or Discipline,0,
+OCCU|Occupations|T090|Occupation or Discipline,0,
+ORGA|Organizations|T093|Health Care Related Organization,0,
+ORGA|Organizations|T092|Organization,0,
+ORGA|Organizations|T094|Professional Society,0,
+ORGA|Organizations|T095|Self-help or Relief Organization,0,
+PHEN|Phenomena|T038|Biologic Function,0,
+PHEN|Phenomena|T069|Environmental Effect of Humans,0,
+PHEN|Phenomena|T068|Human-caused Phenomenon or Process,0,
+PHEN|Phenomena|T034|Laboratory or Test Result,0,
+PHEN|Phenomena|T070|Natural Phenomenon or Process,0,
+PHEN|Phenomena|T067|Phenomenon or Process,0,
+PHYS|Physiology|T043|Cell Function,0,
+PHYS|Physiology|T201|Clinical Attribute,1,
+PHYS|Physiology|T045|Genetic Function,0,
+PHYS|Physiology|T041|Mental Process,0,1
+PHYS|Physiology|T044|Molecular Function,0,
+PHYS|Physiology|T032|Organism Attribute,0,
+PHYS|Physiology|T040|Organism Function,0,1
+PHYS|Physiology|T042|Organ or Tissue Function,0,
+PHYS|Physiology|T039|Physiologic Function,0,
+PROC|Procedures|T060|Diagnostic Procedure,0,
+PROC|Procedures|T065|Educational Activity,0,
+PROC|Procedures|T058|Health Care Activity,0,1
+PROC|Procedures|T059|Laboratory Procedure,0,1
+PROC|Procedures|T063|Molecular Biology Research Technique,0,
+PROC|Procedures|T062|Research Activity,0,
+PROC|Procedures|T061|Therapeutic or Preventive Procedure,0,1
