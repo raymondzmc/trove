@@ -9,7 +9,7 @@ from trove.labelers.matchers import (
 )
 from trove.dataloaders.contexts import Span, Sentence
 from typing import List, Set, Dict
-
+import pdb
 
 ###############################################################################
 #
@@ -120,20 +120,20 @@ class OntologyLabelingFunction(LabelingFunction):
                 return self._labels[key]
         return None
 
-    def __call__(self, sentence:Sentence) -> Dict[int, int]:
+    def __call__(self, sentence:Sentence, return_matched_terms=False, longest_match_only=True) -> Dict[int, int]:
 
         matches = apply_matcher(sentence.words,
                                 sentence.char_offsets,
                                 self.ontology,
                                 max_ngrams=self.max_ngrams,
-                                longest_match_only=True,
+                                longest_match_only=longest_match_only,
                                 case_sensitive=self.case_sensitive)
-        matches = sorted(matches, key=lambda x:x[0], reverse=0)
 
+        matches = sorted(matches, key=lambda x:x[0], reverse=0)
+        
         L = {}
         for (char_start, char_end), term in matches:
             label = self._get_term_label(term)
-
             # None labels are treated as abstains
             if not label:
                 continue
@@ -143,7 +143,12 @@ class OntologyLabelingFunction(LabelingFunction):
             )
             for i in range(start, end + 1):
                 L[i] = label
-        return L
+                
+        if return_matched_terms:
+            return L, matches
+        else:
+            return L
+
 
 
 class SlotFilledOntologyLabelingFunction(LabelingFunction):

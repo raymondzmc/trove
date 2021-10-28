@@ -3,13 +3,14 @@ from typing import Tuple, Dict
 
 class Document(object):
 
-    def __init__(self, name, sentences):
+    def __init__(self, name, sentences, metadata=None):
         self.name = name
         self.sentences = sentences
         for s in sentences:
             s.document = self
         self.annotations = {i:{} for i in range(len(sentences))}
         self.props = {}
+        self.metadata = metadata
         self._text = None
 
     @property

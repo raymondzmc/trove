@@ -64,7 +64,7 @@ def load_json_dataset(fpath,
         for line in fp:
             # initialize context objects
             d = json.loads(line)
-            doc = Document(d['name'], [Sentence(**s) for s in d['sentences']])
+            doc = Document(d['name'], [Sentence(**s) for s in d['sentences']], d['metadata'])
             documents.append(doc)
             # load entities
             entities[doc.name] = set()
